@@ -1,4 +1,4 @@
-name: ai_awesome_env  # Replace with your environment name
+name: head_segmentation
 channels:
   - conda-forge
 dependencies:
