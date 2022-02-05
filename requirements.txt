@@ -1,0 +1,11 @@
+black
+flake8
+jupyterlab
+matplotlib
+numpy
+pandas
+pre-commit
+pytest
+seaborn
+torch
+torchvision

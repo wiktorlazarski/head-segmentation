@@ -1,0 +1,9 @@
+name: ai_awesome_env  # Replace with your environment name
+channels:
+  - conda-forge
+dependencies:
+  - python==3.9
+  - pandas
+  - pip
+  - pip:
+    - --editable .
