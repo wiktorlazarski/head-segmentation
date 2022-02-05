@@ -1,1 +1,0 @@
-print("AI is awesooooome!")

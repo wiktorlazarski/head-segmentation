@@ -3,6 +3,10 @@ flake8
 jupyterlab
 matplotlib
 numpy
+hydra-core
+isort
+opencv-python
+pytorch-lightning
 pandas
 pre-commit
 pytest

@@ -1,17 +1,17 @@
 ______________________________________________________________________
 <div align="center">
 
-# 🤖 AI Awesome Project Template
+# 👦 Human head semantic segmentation
 
 <p align="center">
-  <a href="https://github.com/wiktorlazarski">👋 Template author</a>
+  <a href="https://github.com/wiktorlazarski">👋 Author</a>
 </p>
 
 ______________________________________________________________________
 
 You may want to adjust badge links in a README.md file.
 
-[![ci-testing](https://github.com/wiktorlazarski/ai-awesome-project-template/actions/workflows/ci-testing.yml/badge.svg?branch=master&event=push)](https://github.com/wiktorlazarski/ai-awesome-project-template/actions/workflows/ci-testing.yml)
+[![ci-testing](https://github.com/wiktorlazarski/head-segmentation/actions/workflows/ci-testing.yml/badge.svg?branch=master&event=push)](https://github.com/wiktorlazarski/ai-awesome-project-template/actions/workflows/ci-testing.yml)
 [![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/pytorch/ignite/blob/master/examples/notebooks/FashionMNIST.ipynb)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wiktorlazarski/ai-awesome-project-template/blob/master/LICENSE)
@@ -27,8 +27,6 @@ pip install git+https://github.com/wiktorlazarski/ai-awesome-project-template
 ```
 
 ## ⚙️ Setup for development
-
-**Before setting up a project,** make sure that the `setup.py` script has all setup parameters adjusted and change an `ai_awesome` directory name to your project name. Also, if you want to use conda environment, you may want to change its name in a `conda_env.yml` file. Then, follow the instruction:
 
 ```bash
 # Clone repo
@@ -50,8 +48,6 @@ pre-commit install
 
 ## 🐍 Setup for development with Anaconda or Miniconda
 
-**Before setting up a project,** make sure that the `setup.py` script has all setup parameters adjusted and change an `ai_awesome` directory name to your project name. Additionally, you may want to change a default (_ai_awesome_env_) conda environment name in a `conda_env.yml` file. Then, follow the instruction:
-
 ```bash
 # Clone repo
 git clone https://github.com/wiktorlazarski/ai-awesome-project-template.git
@@ -68,8 +64,8 @@ pre-commit install
 ```
 
 <div align="center">
-  
-### 🤗 Happy coding !
+
+### 🤗 Enjoy model !
 
 </div>
 
