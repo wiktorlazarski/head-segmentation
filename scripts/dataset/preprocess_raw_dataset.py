@@ -1,8 +1,8 @@
 import argparse
+import logging
 import shutil
 import typing as t
 from pathlib import Path
-import logging
 
 import cv2
 import numpy as np
