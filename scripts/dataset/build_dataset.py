@@ -1,11 +1,9 @@
 import argparse
 import logging
+import random
 import shutil
 import typing as t
 from pathlib import Path
-
-import numpy
-import random
 
 
 def parse_args() -> argparse.Namespace:

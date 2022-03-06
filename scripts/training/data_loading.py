@@ -15,17 +15,17 @@ class CelebAHeadSegmentationDataset(torchvision.datasets.VisionDataset):
     ):
         super().__init__(root=dataset_path)
 
-        self.image_files = self.__load_image_files()
+        self.image_files = self._load_image_files()
         self.aug_pipeline = augmentation_pipeline
         self.preprocess_pipeline = preprocess_pipeline
 
     def __len__(self) -> int:
-        return len([])
+        return len(self.image_files)
 
     def __getitem__(self, index: int) -> t.Tuple[torch.Tensor, torch.Tensor]:
         image_file = self.image_files[index]
 
-        image, segmap = self.__load_sample(image_file)
+        image, segmap = self._load_sample(image_file)
 
         if self.aug_pipeline is not None:
             image, segmap = self.aug_pipeline(image=image, segmap=segmap)
@@ -35,14 +35,14 @@ class CelebAHeadSegmentationDataset(torchvision.datasets.VisionDataset):
 
         return image, segmap
 
-    def __load_image_files(self) -> t.List[str]:
+    def _load_image_files(self) -> t.List[str]:
         images_dir = p.Path(self.root) / "images"
 
         image_files = sorted(list(images_dir.glob("*.jpg")))
 
         return image_files
 
-    def __load_sample(
+    def _load_sample(
         self, image_filename: p.Path
     ) -> t.Tuple[torch.Tensor, torch.Tensor]:
         image = cv2.imread(str(image_filename), cv2.IMREAD_COLOR)

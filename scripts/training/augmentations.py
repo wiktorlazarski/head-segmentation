@@ -31,7 +31,6 @@ class AugmentationPipeline:
         "motion_blur": A.MotionBlur(blur_limit=(21, 31), p=0.5),
         "rain_noise": A.RandomRain(p=0.05),
         "fog_noise": A.RandomFog(p=0.05),
-        "sun_noise": A.RandomSunFlare(p=0.05),
     }
 
     def __init__(

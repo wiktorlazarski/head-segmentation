@@ -12,5 +12,7 @@ pre-commit
 pytest
 pytorch-lightning
 seaborn
+segmentation-models-pytorch
+timm
 torch
 torchvision
