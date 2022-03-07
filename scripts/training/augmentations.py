@@ -61,12 +61,14 @@ class AugmentationPipeline:
     def __call__(
         self, image: np.ndarray, segmap: np.ndarray
     ) -> t.Tuple[torch.Tensor, torch.Tensor]:
-        resize_aug = random.choice(self.resize_augmentation_ops)
+        if self.resize_augmentation_ops is not None:
+            resize_aug = random.choice(self.resize_augmentation_ops)
+            resized_image = resize_aug(image=image, mask=segmap)
 
-        resize_res = resize_aug(image=image, mask=segmap)
-
-        aug_result = self.aug_pipeline(
-            image=resize_res["image"], mask=resize_res["mask"]
-        )
+            aug_result = self.aug_pipeline(
+                image=resized_image["image"], mask=resized_image["mask"]
+            )
+        else:
+            aug_result = self.aug_pipeline(image=image, mask=segmap)
 
         return aug_result["image"], aug_result["mask"]
