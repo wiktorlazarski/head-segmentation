@@ -15,7 +15,7 @@ __version__ = runpy.run_path("head_segmentation/_version.py")["__version__"]
 setuptools.setup(
     name="head_segmentation",
     version=__version__,
-    author="Wiktor Łazarski",
+    author="Wiktor Łazarski, Jakub Szumski",
     author_email="wjlazarski@gmail.com",
     description="Human head semantic segmentation.",
     long_description=long_description,

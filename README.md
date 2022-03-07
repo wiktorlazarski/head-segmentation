@@ -3,8 +3,10 @@ ______________________________________________________________________
 
 # 👦 Human head semantic segmentation
 
+**Authors**
 <p align="center">
-  <a href="https://github.com/wiktorlazarski">👋 Author</a>
+  <a href="https://github.com/wiktorlazarski">🧑‍🎓 Wiktor</a>
+  <a href="https://github.com/Szuumii">🧑‍🎓 Kuba</a>
 </p>
 
 ______________________________________________________________________
@@ -23,17 +25,17 @@ You may want to adjust badge links in a README.md file.
 Installation is as simple as running:
 
 ```bash
-pip install git+https://github.com/wiktorlazarski/ai-awesome-project-template
+pip install git+https://github.com/wiktorlazarski/head-segmentation.git
 ```
 
 ## ⚙️ Setup for development
 
 ```bash
 # Clone repo
-git clone https://github.com/wiktorlazarski/ai-awesome-project-template.git
+git clone https://github.com/wiktorlazarski/head-segmentation.git
 
 # Go to repo directory
-cd ai-awesome-project-template
+cd head-segmentation
 
 # (Optional) Create virtual environment
 python -m venv venv
@@ -50,14 +52,14 @@ pre-commit install
 
 ```bash
 # Clone repo
-git clone https://github.com/wiktorlazarski/ai-awesome-project-template.git
+git clone https://github.com/wiktorlazarski/head-segmentation.git
 
 # Go to repo directory
-cd ai-awesome-project-template
+cd head-segmentation
 
 # Create and activate conda environment
 conda env create -f ./conda_env.yml
-conda activate ai_awesome_env
+conda activate head_segmentation
 
 # (Optional but recommended) Install pre-commit hooks to preserve code format consistency
 pre-commit install
@@ -65,7 +67,7 @@ pre-commit install
 
 <div align="center">
 
-### 🤗 Enjoy model !
+### 🤗 Enjoy the model!
 
 </div>
 
