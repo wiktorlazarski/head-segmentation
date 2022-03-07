@@ -31,7 +31,8 @@ class CelebAHeadSegmentationDataset(torchvision.datasets.VisionDataset):
             image, segmap = self.aug_pipeline(image=image, segmap=segmap)
 
         if self.preprocess_pipeline is not None:
-            image = self.preprocess_pipeline(img=image)
+            image = self.preprocess_pipeline.preprocess_image(image=image)
+            segmap = self.preprocess_pipeline.preprocess_segmap(segmap=segmap)
 
         return image, segmap
 
