@@ -1,0 +1,18 @@
+hydra:
+  run:
+    dir: 'experiments/${now:%Y-%m}/${now:%H-%M-%S}'
+  output_subdir: 'yamls'
+
+dataset_module:
+  dataset_root: '/path/to/dataset/root'
+  nn_image_input_resolution: 512
+  batch_size: 4
+  all_augmentations: true
+  size_augmentation_keys: null
+  content_augmentation_keys: null
+  num_workers: 0
+
+nn_module:
+  encoder_name: 'mobilenet_v2'
+  encoder_depth: 3
+  use_pretrained: true
