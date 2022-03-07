@@ -10,12 +10,12 @@ class PreprocessingPipeline:
     IMAGENET_MEANS = [0.485, 0.456, 0.406]
     IMAGENET_STDS = [0.229, 0.224, 0.225]
 
-    def __init__(self, nn_input_image_size: int):
-        self.nn_input_image_size = nn_input_image_size
+    def __init__(self, nn_image_input_resolution: int):
+        self.nn_image_input_resolution = nn_image_input_resolution
         self.image_preprocessing_pipeline = transforms.Compose(
             [
                 transforms.ToTensor(),
-                transforms.Resize(nn_input_image_size),
+                transforms.Resize(nn_image_input_resolution),
                 transforms.Normalize(
                     mean=PreprocessingPipeline.IMAGENET_MEANS,
                     std=PreprocessingPipeline.IMAGENET_STDS,
@@ -30,7 +30,7 @@ class PreprocessingPipeline:
         return self.image_preprocessing_pipeline(Image.fromarray(image))
 
     def preprocess_segmap(self, segmap: np.ndarray) -> torch.Tensor:
-        output_dim = (self.nn_input_image_size, self.nn_input_image_size)
+        output_dim = (self.nn_image_input_resolution, self.nn_image_input_resolution)
 
         preprocessed_segmap = cv2.resize(segmap, output_dim)
 

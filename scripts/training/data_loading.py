@@ -5,19 +5,22 @@ import cv2
 import torch
 import torchvision
 
+import head_segmentation.image_processing as ip
+import scripts.training.augmentations as aug
+
 
 class CelebAHeadSegmentationDataset(torchvision.datasets.VisionDataset):
     def __init__(
         self,
         dataset_path: str,
-        augmentation_pipeline: t.Callable = None,
-        preprocess_pipeline: t.Callable = None,
+        preprocess_pipeline: t.Optional[ip.PreprocessingPipeline] = None,
+        augmentation_pipeline: t.Optional[aug.AugmentationPipeline] = None,
     ):
         super().__init__(root=dataset_path)
 
         self.image_files = self._load_image_files()
-        self.aug_pipeline = augmentation_pipeline
         self.preprocess_pipeline = preprocess_pipeline
+        self.aug_pipeline = augmentation_pipeline
 
     def __len__(self) -> int:
         return len(self.image_files)
