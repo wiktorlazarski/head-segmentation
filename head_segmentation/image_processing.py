@@ -34,4 +34,4 @@ class PreprocessingPipeline:
 
         preprocessed_segmap = cv2.resize(segmap, output_dim)
 
-        return torch.Tensor(preprocessed_segmap)
+        return torch.LongTensor(preprocessed_segmap)

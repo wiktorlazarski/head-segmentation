@@ -20,7 +20,7 @@ setuptools.setup(
     description="Human head semantic segmentation.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/your_project_link",
+    url="https://github.com/wiktorlazarski/head-segmentation",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
