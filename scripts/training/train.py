@@ -38,7 +38,7 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     # Callbacks
-    logger.debug("🕸 Initializing callbacks.")
+    logger.debug("📲 Initializing callbacks.")
     early_stop_callback = pl.callbacks.early_stopping.EarlyStopping(
         monitor=configs.training.early_stop.monitor,
         patience=configs.training.early_stop.patience,
