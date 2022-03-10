@@ -4,6 +4,7 @@ flake8
 hydra-core
 isort
 jupyterlab
+loguru
 matplotlib
 numpy
 opencv-python
@@ -16,3 +17,4 @@ segmentation-models-pytorch
 timm
 torch
 torchvision
+wandb

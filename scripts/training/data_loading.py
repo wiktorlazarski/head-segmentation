@@ -12,11 +12,11 @@ import scripts.training.augmentations as aug
 class CelebAHeadSegmentationDataset(torchvision.datasets.VisionDataset):
     def __init__(
         self,
-        dataset_path: str,
+        dataset_root: str,
         preprocess_pipeline: t.Optional[ip.PreprocessingPipeline] = None,
         augmentation_pipeline: t.Optional[aug.AugmentationPipeline] = None,
     ):
-        super().__init__(root=dataset_path)
+        super().__init__(root=dataset_root)
 
         self.image_files = self._load_image_files()
         self.preprocess_pipeline = preprocess_pipeline

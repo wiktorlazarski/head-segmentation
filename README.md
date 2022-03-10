@@ -1,9 +1,8 @@
 ______________________________________________________________________
 <div align="center">
 
-# 👦 Human head semantic segmentation
+# 👦 Human Head Semantic Segmentation
 
-**Authors**
 <p align="center">
   <a href="https://github.com/wiktorlazarski">🧑‍🎓 Wiktor</a>
   <a href="https://github.com/Szuumii">🧑‍🎓 Kuba</a>

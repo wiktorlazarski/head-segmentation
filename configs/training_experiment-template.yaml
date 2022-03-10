@@ -1,6 +1,6 @@
 hydra:
   run:
-    dir: 'experiments/${now:%Y-%m}/${now:%H-%M-%S}'
+    dir: 'training_runs/${now:%Y-%m-%d}/${now:%H-%M}'
   output_subdir: 'yamls'
 
 dataset_module:
@@ -13,6 +13,17 @@ dataset_module:
   num_workers: 0
 
 nn_module:
+  lr: 0.0001
   encoder_name: 'mobilenet_v2'
   encoder_depth: 3
   use_pretrained: true
+
+training:
+  wandb_project: "head-segmentation"
+  wandb_name: "test-run"
+  with_gpu: false
+  max_epochs: 10
+  early_stop:
+    monitor: "val_loss"
+    patience: 5
+    mode: "min"

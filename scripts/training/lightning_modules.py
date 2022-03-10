@@ -91,6 +91,7 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
     def __init__(
         self,
         *,
+        lr: float,
         encoder_name: str,
         encoder_depth: int,
         pretrained: bool,
@@ -99,6 +100,9 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
         super().__init__()
         self.save_hyperparameters()
 
+        self.learning_rate = lr
+        self.criterion = None  # TODO Maybe: torch.nn.CrossEntropyLoss()
+
         self.neural_net = mdl.HeadSegmentationModel(
             encoder_name=encoder_name,
             encoder_depth=encoder_depth,
@@ -106,26 +110,68 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
             nn_image_input_resolution=nn_image_input_resolution,
         )
 
+    def configure_optimizers(self) -> torch.optim.Optimizer:
+        return torch.optim.Adam(self.neural_net.parameters(), lr=self.learning_rate)
+
     def training_step(
         self, batch: t.Tuple[torch.Tensor, torch.Tensor], batch_idx: int
     ) -> pl.utilities.types.STEP_OUTPUT:
-        pass
+        step_results = self._step(batch)
+
+        self.log("train_step_loss", step_results["loss"].item(), on_step=True)
+
+        return step_results
 
     def validation_step(
         self, batch: t.Tuple[torch.Tensor, torch.Tensor], batch_idx: int
     ) -> pl.utilities.types.STEP_OUTPUT:
-        pass
+        return self._step(batch)
 
     def test_step(
         self, batch: t.Tuple[torch.Tensor, torch.Tensor], batch_idx: int
     ) -> pl.utilities.types.STEP_OUTPUT:
-        pass
+        return self._step(batch)
 
     def training_epoch_end(self, outputs: pl.utilities.types.EPOCH_OUTPUT) -> None:
-        pass
+        self._summarize_epoch(log_prefix="train", outputs=outputs)
 
     def validation_epoch_end(self, outputs: pl.utilities.types.EPOCH_OUTPUT) -> None:
-        pass
+        self._summarize_epoch(log_prefix="val", outputs=outputs)
 
     def test_epoch_end(self, outputs: pl.utilities.types.EPOCH_OUTPUT) -> None:
-        pass
+        self._summarize_epoch(log_prefix="test", outputs=outputs)
+
+    def _step(self, batch: t.Tuple[torch.Tensor, torch.Tensor]) -> torch.Tensor:
+        image, true_segmap = batch
+
+        pred_segmap = self.neural_net(image)
+
+        loss = self.criterion(pred_segmap, true_segmap)
+
+        miou, background_iou, head_iou = 0.0, 0.0, 0.0  # TODO
+
+        return {
+            "loss": loss,
+            "miou": miou,
+            "background_iou": background_iou,
+            "head_iou": head_iou,
+        }
+
+    def _summarize_epoch(
+        self, log_prefix: str, outputs: pl.utilities.types.EPOCH_OUTPUT
+    ) -> None:
+        metrics_names = list(outputs[0].keys())
+        metrics_cumsums = dict(zip(metrics_names, [0.0] * len(metrics_names)))
+
+        for step_result in outputs:
+            for metric_name in metrics_names:
+                value = step_result[metric_name]
+                if isinstance(value, torch.Tensor):
+                    value = value.item()
+
+                metrics_cumsums[metric_name] += step_result[metric_name]
+
+        num_steps = len(outputs)
+        for metric_name, cumsum_val in metrics_cumsums.items():
+            metric_mean = cumsum_val / num_steps
+            self.log(f"{log_prefix}_{metric_name}", metric_mean, on_epoch=True)
