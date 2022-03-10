@@ -13,10 +13,12 @@ import scripts.training.lightning_modules as lm
 @hydra.main(
     config_path=os.path.join(os.getcwd(), "configs"), config_name="training_experiment"
 )
+@logger.catch
 def main(configs: omegaconf.DictConfig) -> None:
-    logger.debug("🚀 Processed started.")
+    logger.add("train.log")
+    logger.info("🚀 Processed started.")
 
-    logger.debug("📚 Creating dataset module.")
+    logger.info("📚 Creating dataset module.")
     # Training data and model modules
     dataset_module = lm.HumanHeadSegmentationDataModule(
         dataset_root=configs.dataset_module.dataset_root,
@@ -28,7 +30,7 @@ def main(configs: omegaconf.DictConfig) -> None:
         content_augmentation_keys=configs.dataset_module.content_augmentation_keys,
     )
 
-    logger.debug("🕸 Creating neural network module.")
+    logger.info("🕸 Creating neural network module.")
     nn_module = lm.HumanHeadSegmentationModelModule(
         lr=configs.nn_module.lr,
         encoder_name=configs.nn_module.encoder_name,
@@ -38,7 +40,7 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     # Callbacks
-    logger.debug("📲 Initializing callbacks.")
+    logger.info("📲 Initializing callbacks.")
     early_stop_callback = pl.callbacks.early_stopping.EarlyStopping(
         monitor=configs.training.early_stop.monitor,
         patience=configs.training.early_stop.patience,
@@ -57,7 +59,7 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     # W&B Logger
-    logger.debug("📝 Initializing W&B logger.")
+    logger.info("📝 Initializing W&B logger.")
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     wandb_logger = pl.loggers.WandbLogger(
         project=configs.training.wandb_project,
@@ -65,7 +67,7 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     # Training env configs
-    logger.debug("🌍 Initializing training environment.")
+    logger.info("🌍 Initializing training environment.")
     nn_trainer = pl.Trainer(
         logger=wandb_logger,
         log_every_n_steps=1,
@@ -76,14 +78,14 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     # Train loop
-    logger.debug("🏋️ Starting training loop.")
+    logger.info("🏋️ Starting training loop.")
     nn_trainer.fit(nn_module, dataset_module)
 
     # Test loop
-    logger.debug("🧪 Starting testing loop.")
+    logger.info("🧪 Starting testing loop.")
     nn_trainer.test()
 
-    logger.debug("🏁 Processed finished.")
+    logger.success("🏁 Processed finished.")
 
 
 if __name__ == "__main__":
