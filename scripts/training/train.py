@@ -7,7 +7,7 @@ import hydra
 import omegaconf
 import pytorch_lightning as pl
 
-import scripts.training.training_modules as tm
+import scripts.training.lightning_modules as lm
 
 
 @hydra.main(
@@ -19,7 +19,7 @@ def main(configs: omegaconf.DictConfig) -> None:
 
     logging.info("Creating dataset module.")
     # Training data and model modules
-    dataset_module = tm.HumanHeadSegmentationDataModule(
+    dataset_module = lm.HumanHeadSegmentationDataModule(
         dataset_root=configs.dataset_module.dataset_root,
         nn_image_input_resolution=configs.dataset_module.nn_image_input_resolution,
         batch_size=configs.dataset_module.batch_size,
@@ -30,7 +30,7 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     logging.info("Creating neural network module.")
-    nn_module = tm.HumanHeadSegmentationModelModule(
+    nn_module = lm.HumanHeadSegmentationModelModule(
         lr=configs.nn_module.lr,
         encoder_name=configs.nn_module.encoder_name,
         encoder_depth=configs.nn_module.encoder_depth,
