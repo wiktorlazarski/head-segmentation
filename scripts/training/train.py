@@ -76,11 +76,11 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     # Train loop
-    logger.debug("🏋️‍♀️ Starting training loop.")
+    logger.debug("🏋️ Starting training loop.")
     nn_trainer.fit(nn_module, dataset_module)
 
     # Test loop
-    logger.debug("👩‍🔬 Starting testing loop.")
+    logger.debug("🧪 Starting testing loop.")
     nn_trainer.test()
 
     logger.debug("🏁 Processed finished.")
