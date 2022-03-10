@@ -133,7 +133,7 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
         return self._step(batch)
 
     def training_epoch_end(self, outputs: pl.utilities.types.EPOCH_OUTPUT) -> None:
-        self._summarize_epoch(log_prefix="val", outputs=outputs)
+        self._summarize_epoch(log_prefix="train", outputs=outputs)
 
     def validation_epoch_end(self, outputs: pl.utilities.types.EPOCH_OUTPUT) -> None:
         self._summarize_epoch(log_prefix="val", outputs=outputs)
