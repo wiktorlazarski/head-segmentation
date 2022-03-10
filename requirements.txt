@@ -4,6 +4,7 @@ flake8
 hydra-core
 isort
 jupyterlab
+loguru
 matplotlib
 numpy
 opencv-python

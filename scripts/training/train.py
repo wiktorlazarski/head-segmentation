@@ -1,11 +1,11 @@
 import datetime
-import logging
 import os
 import warnings
 
 import hydra
 import omegaconf
 import pytorch_lightning as pl
+from loguru import logger
 
 import scripts.training.lightning_modules as lm
 
@@ -14,10 +14,9 @@ import scripts.training.lightning_modules as lm
     config_path=os.path.join(os.getcwd(), "configs"), config_name="training_experiment"
 )
 def main(configs: omegaconf.DictConfig) -> None:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s train.py: %(message)s")
-    logging.info("Processed started.")
+    logger.debug("🚀 Processed started.")
 
-    logging.info("Creating dataset module.")
+    logger.debug("📚 Creating dataset module.")
     # Training data and model modules
     dataset_module = lm.HumanHeadSegmentationDataModule(
         dataset_root=configs.dataset_module.dataset_root,
@@ -29,7 +28,7 @@ def main(configs: omegaconf.DictConfig) -> None:
         content_augmentation_keys=configs.dataset_module.content_augmentation_keys,
     )
 
-    logging.info("Creating neural network module.")
+    logger.debug("🕸 Creating neural network module.")
     nn_module = lm.HumanHeadSegmentationModelModule(
         lr=configs.nn_module.lr,
         encoder_name=configs.nn_module.encoder_name,
@@ -39,6 +38,7 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     # Callbacks
+    logger.debug("🕸 Initializing callbacks.")
     early_stop_callback = pl.callbacks.early_stopping.EarlyStopping(
         monitor=configs.training.early_stop.monitor,
         patience=configs.training.early_stop.patience,
@@ -57,6 +57,7 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     # W&B Logger
+    logger.debug("📝 Initializing W&B logger.")
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     wandb_logger = pl.loggers.WandbLogger(
         project=configs.training.wandb_project,
@@ -64,6 +65,7 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     # Training env configs
+    logger.debug("🌍 Initializing training environment.")
     nn_trainer = pl.Trainer(
         logger=wandb_logger,
         log_every_n_steps=1,
@@ -74,14 +76,14 @@ def main(configs: omegaconf.DictConfig) -> None:
     )
 
     # Train loop
-    logging.info("Starting training loop.")
+    logger.debug("🏋️‍♀️ Starting training loop.")
     nn_trainer.fit(nn_module, dataset_module)
 
     # Test loop
-    logging.info("Starting testing loop.")
+    logger.debug("👩‍🔬 Starting testing loop.")
     nn_trainer.test()
 
-    logging.info("Processed finished.")
+    logger.debug("🏁 Processed finished.")
 
 
 if __name__ == "__main__":
