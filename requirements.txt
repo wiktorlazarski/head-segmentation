@@ -14,7 +14,6 @@ pytest
 pytorch-lightning
 seaborn
 segmentation-models-pytorch
-timm
 torch
 torchvision
 wandb

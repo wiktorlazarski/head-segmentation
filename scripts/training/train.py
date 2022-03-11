@@ -37,6 +37,8 @@ def main(configs: omegaconf.DictConfig) -> None:
         encoder_depth=configs.nn_module.encoder_depth,
         pretrained=configs.nn_module.use_pretrained,
         nn_image_input_resolution=configs.dataset_module.nn_image_input_resolution,
+        background_weight=configs.nn_module.loss.background_weight,
+        head_weight=configs.nn_module.loss.head_weight,
     )
 
     # Callbacks

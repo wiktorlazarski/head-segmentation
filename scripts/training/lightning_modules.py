@@ -3,6 +3,7 @@ import typing as t
 
 import pytorch_lightning as pl
 import torch
+from torchmetrics import ConfusionMatrix
 
 import head_segmentation.image_processing as ip
 import head_segmentation.model as mdl
@@ -96,12 +97,18 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
         encoder_depth: int,
         pretrained: bool,
         nn_image_input_resolution: int,
+        background_weight: float = 1.0,
+        head_weight: float = 1.0,
     ):
         super().__init__()
         self.save_hyperparameters()
 
         self.learning_rate = lr
-        self.criterion = None  # TODO Maybe: torch.nn.CrossEntropyLoss()
+        self.criterion = torch.nn.CrossEntropyLoss(
+            weight=torch.tensor([background_weight, head_weight])
+        )
+
+        self.metric = ConfusionMatrix(num_classes=2)
 
         self.neural_net = mdl.HeadSegmentationModel(
             encoder_name=encoder_name,
@@ -148,30 +155,25 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
 
         loss = self.criterion(pred_segmap, true_segmap)
 
-        miou, background_iou, head_iou = 0.0, 0.0, 0.0  # TODO
+        self.metric.update(pred_segmap, true_segmap)
 
-        return {
-            "loss": loss,
-            "miou": miou,
-            "background_iou": background_iou,
-            "head_iou": head_iou,
-        }
+        return {"loss": loss}
 
     def _summarize_epoch(
         self, log_prefix: str, outputs: pl.utilities.types.EPOCH_OUTPUT
     ) -> None:
-        metrics_names = list(outputs[0].keys())
-        metrics_cumsums = dict(zip(metrics_names, [0.0] * len(metrics_names)))
+        mean_loss = torch.tensor([out["loss"] for out in outputs]).mean()
+        self.log(f"{log_prefix}_loss", mean_loss, on_epoch=True)
 
-        for step_result in outputs:
-            for metric_name in metrics_names:
-                value = step_result[metric_name]
-                if isinstance(value, torch.Tensor):
-                    value = value.item()
+        cm = self.metric.compute()
+        cm = cm.detach()
 
-                metrics_cumsums[metric_name] += step_result[metric_name]
+        ious = cm.diag() / (cm.sum(dim=1) + cm.sum(dim=0) - cm.diag() + 1e-15)
+        background_iou, head_iou = ious[0], ious[1]
+        mIoU = ious.mean()
 
-        num_steps = len(outputs)
-        for metric_name, cumsum_val in metrics_cumsums.items():
-            metric_mean = cumsum_val / num_steps
-            self.log(f"{log_prefix}_{metric_name}", metric_mean, on_epoch=True)
+        self.log(f"{log_prefix}_background_IoU", background_iou, on_epoch=True)
+        self.log(f"{log_prefix}_head_IoU", head_iou, on_epoch=True)
+        self.log(f"{log_prefix}_mIoU", mIoU, on_epoch=True)
+
+        self.metric.reset()
