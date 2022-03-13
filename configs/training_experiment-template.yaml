@@ -17,6 +17,9 @@ nn_module:
   encoder_name: 'mobilenet_v2'
   encoder_depth: 3
   use_pretrained: true
+  loss:
+    background_weight: 1.0
+    head_weight: 1.0
 
 training:
   wandb_project: "head-segmentation"

@@ -37,6 +37,8 @@ def main(configs: omegaconf.DictConfig) -> None:
         encoder_depth=configs.nn_module.encoder_depth,
         pretrained=configs.nn_module.use_pretrained,
         nn_image_input_resolution=configs.dataset_module.nn_image_input_resolution,
+        background_weight=configs.nn_module.loss.background_weight,
+        head_weight=configs.nn_module.loss.head_weight,
     )
 
     # Callbacks
@@ -51,10 +53,10 @@ def main(configs: omegaconf.DictConfig) -> None:
         monitor=configs.training.early_stop.monitor,
         mode=configs.training.early_stop.mode,
         # fmt: off
-        filename="{configs.training.wandb_name}" + "-{epoch}-" + "{configs.training.early_stop.monitor:.2f}",
+        filename=configs.training.wandb_name + "-{epoch}-{" + configs.training.early_stop.monitor + ":.4f}",
         # fmt: on
         save_top_k=3,
-        dirpath=".",
+        dirpath="./models",
         save_last=True,
     )
 
@@ -83,7 +85,7 @@ def main(configs: omegaconf.DictConfig) -> None:
 
     # Test loop
     logger.info("🧪 Starting testing loop.")
-    nn_trainer.test()
+    nn_trainer.test(nn_module, dataset_module)
 
     logger.success("🏁 Processed finished.")
 
