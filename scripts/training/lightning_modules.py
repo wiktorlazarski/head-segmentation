@@ -108,7 +108,9 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
             weight=torch.tensor([background_weight, head_weight])
         )
 
-        self.metric = ConfusionMatrix(num_classes=2)
+        self.train_cm_metric = ConfusionMatrix(num_classes=2)
+        self.val_cm_metric = ConfusionMatrix(num_classes=2)
+        self.test_cm_metric = ConfusionMatrix(num_classes=2)
 
         self.neural_net = mdl.HeadSegmentationModel(
             encoder_name=encoder_name,
@@ -123,7 +125,7 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
     def training_step(
         self, batch: t.Tuple[torch.Tensor, torch.Tensor], batch_idx: int
     ) -> pl.utilities.types.STEP_OUTPUT:
-        step_results = self._step(batch)
+        step_results = self._step(batch, cm_metric=self.train_cm_metric)
 
         self.log("train_step_loss", step_results["loss"].item(), on_step=True)
 
@@ -132,40 +134,51 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
     def validation_step(
         self, batch: t.Tuple[torch.Tensor, torch.Tensor], batch_idx: int
     ) -> pl.utilities.types.STEP_OUTPUT:
-        return self._step(batch)
+        return self._step(batch, cm_metric=self.val_cm_metric)
 
     def test_step(
         self, batch: t.Tuple[torch.Tensor, torch.Tensor], batch_idx: int
     ) -> pl.utilities.types.STEP_OUTPUT:
-        return self._step(batch)
+        return self._step(batch, cm_metric=self.test_cm_metric)
 
     def training_epoch_end(self, outputs: pl.utilities.types.EPOCH_OUTPUT) -> None:
-        self._summarize_epoch(log_prefix="train", outputs=outputs)
+        self._summarize_epoch(
+            log_prefix="train", outputs=outputs, cm_metric=self.train_cm_metric
+        )
 
     def validation_epoch_end(self, outputs: pl.utilities.types.EPOCH_OUTPUT) -> None:
-        self._summarize_epoch(log_prefix="val", outputs=outputs)
+        self._summarize_epoch(
+            log_prefix="val", outputs=outputs, cm_metric=self.val_cm_metric
+        )
 
     def test_epoch_end(self, outputs: pl.utilities.types.EPOCH_OUTPUT) -> None:
-        self._summarize_epoch(log_prefix="test", outputs=outputs)
+        self._summarize_epoch(
+            log_prefix="test", outputs=outputs, cm_metric=self.test_cm_metric
+        )
 
-    def _step(self, batch: t.Tuple[torch.Tensor, torch.Tensor]) -> torch.Tensor:
+    def _step(
+        self, batch: t.Tuple[torch.Tensor, torch.Tensor], cm_metric: ConfusionMatrix
+    ) -> torch.Tensor:
         image, true_segmap = batch
 
         pred_segmap = self.neural_net(image)
 
         loss = self.criterion(pred_segmap, true_segmap)
 
-        self.metric.update(pred_segmap, true_segmap)
+        cm_metric(pred_segmap, true_segmap)
 
         return {"loss": loss}
 
     def _summarize_epoch(
-        self, log_prefix: str, outputs: pl.utilities.types.EPOCH_OUTPUT
+        self,
+        log_prefix: str,
+        outputs: pl.utilities.types.EPOCH_OUTPUT,
+        cm_metric: ConfusionMatrix,
     ) -> None:
         mean_loss = torch.tensor([out["loss"] for out in outputs]).mean()
         self.log(f"{log_prefix}_loss", mean_loss, on_epoch=True)
 
-        cm = self.metric.compute()
+        cm = cm_metric.compute()
         cm = cm.detach()
 
         ious = cm.diag() / (cm.sum(dim=1) + cm.sum(dim=0) - cm.diag() + 1e-15)
@@ -176,4 +189,4 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
         self.log(f"{log_prefix}_head_IoU", head_iou, on_epoch=True)
         self.log(f"{log_prefix}_mIoU", mIoU, on_epoch=True)
 
-        self.metric.reset()
+        cm_metric.reset()
