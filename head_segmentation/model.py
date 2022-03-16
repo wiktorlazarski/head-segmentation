@@ -1,9 +1,31 @@
+from __future__ import annotations
+
 import typing as t
 
 import segmentation_models_pytorch as smp
+import torch
 
 
 class HeadSegmentationModel(smp.Unet):
+    @staticmethod
+    def load_from_checkpoint(ckpt_path: str) -> HeadSegmentationModel:
+        ckpt = torch.load(ckpt_path, map_location=torch.device("cpu"))
+
+        hparams = ckpt["hyper_parameters"]
+        neural_net = HeadSegmentationModel(
+            encoder_name=hparams["encoder_name"],
+            encoder_depth=hparams["encoder_depth"],
+            pretrained=False,
+            nn_image_input_resolution=hparams["nn_image_input_resolution"],
+        )
+
+        weigths = {
+            k.replace("neural_net.", ""): v for k, v in ckpt["state_dict"].items()
+        }
+        neural_net.load_state_dict(weigths, strict=False)
+
+        return neural_net
+
     def __init__(
         self,
         encoder_name: str,
