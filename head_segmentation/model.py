@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import typing as t
-import torch
 
 import segmentation_models_pytorch as smp
+import torch
 
 
 class HeadSegmentationModel(smp.Unet):
