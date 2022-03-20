@@ -15,7 +15,9 @@ class PreprocessingPipeline:
         self.image_preprocessing_pipeline = transforms.Compose(
             [
                 transforms.ToTensor(),
-                transforms.Resize(nn_image_input_resolution),
+                transforms.Resize(
+                    (nn_image_input_resolution, nn_image_input_resolution)
+                ),
                 transforms.Normalize(
                     mean=PreprocessingPipeline.IMAGENET_MEANS,
                     std=PreprocessingPipeline.IMAGENET_STDS,
