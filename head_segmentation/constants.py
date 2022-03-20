@@ -8,7 +8,5 @@ INDEX2LABEL = {0: "background", 1: "head"}
 ###### MODEL ######
 
 HEAD_SEGMENTATION_MODEL_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "model",
-    "best_model_from_experiments.ckpt",
+    os.path.dirname(os.path.abspath(__file__)), "model", "best_model.ckpt"
 )
