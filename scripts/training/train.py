@@ -16,7 +16,7 @@ import scripts.training.lightning_modules as lm
 @logger.catch
 def main(configs: omegaconf.DictConfig) -> None:
     logger.add("train.log")
-    logger.info("🚀 Processed started.")
+    logger.info("🚀 Process started.")
 
     logger.info("📚 Creating dataset module.")
     # Training data and model modules
@@ -87,7 +87,7 @@ def main(configs: omegaconf.DictConfig) -> None:
     logger.info("🧪 Starting testing loop.")
     nn_trainer.test(nn_module, dataset_module)
 
-    logger.success("🏁 Processed finished.")
+    logger.success("🏁 Process finished.")
 
 
 if __name__ == "__main__":
