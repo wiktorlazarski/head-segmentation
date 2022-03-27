@@ -1,25 +1,34 @@
-from .image_processing import PreprocessingPipeline
-from .model import HeadSegmentationModel
-from .constants import HEAD_SEGMENTATION_MODEL_PATH
+import head_segmentation.image_processing as ip
+import head_segmentation.model as mdl
+import head_segmentation.constants as C
 import cv2
 import numpy as np
+import torch
 
 
-class PredictPipeline:
-    def __init__(self, model_path=HEAD_SEGMENTATION_MODEL_PATH):
+class HumanHeadSegmentationPipeline:
+    def __init__(
+        self,
+        model_path: str = C.HEAD_SEGMENTATION_MODEL_PATH,
+        image_input_resolution: int = 512,
+    ):
 
-        self.preprocessing_pipeline = PreprocessingPipeline(
-            nn_image_input_resolution=512
+        self._preprocessing_pipeline = ip.PreprocessingPipeline(
+            nn_image_input_resolution=image_input_resolution
         )
-        self.model = HeadSegmentationModel.load_from_checkpoint(ckpt_path=model_path)
-        self.model.eval()
+        self._model = mdl.HeadSegmentationModel.load_from_checkpoint(
+            ckpt_path=model_path
+        )
+        self._model.eval()
 
-    def preprocess_image(self, image):
-        preprocessed_image = self.preprocessing_pipeline.preprocess_image(image)
+    def _preprocess_image(self, image: np.ndarray) -> torch.Tensor:
+        preprocessed_image = self._preprocessing_pipeline.preprocess_image(image)
         preprocessed_image = preprocessed_image.unsqueeze(0)
         return preprocessed_image
 
-    def postprocess_image(self, out, original_image):
+    def _postprocess_model_output(
+        self, out: torch.Tensor, original_image: np.ndarray
+    ) -> np.ndarray:
         out = out.squeeze()
         out = out.argmax(dim=0)
         out = out.numpy().astype(np.uint8)
@@ -28,8 +37,8 @@ class PredictPipeline:
 
         return postprocessed
 
-    def predict(self, image):
-        preprocessed_image = self.preprocess_image(image)
-        mdl_out = self.model(preprocessed_image)
-        pred_segmap = self.postprocess_image(mdl_out, original_image=image)
+    def predict(self, image: np.ndarray) -> np.ndarray:
+        preprocessed_image = self._preprocess_image(image)
+        mdl_out = self._model(preprocessed_image)
+        pred_segmap = self._postprocess_model_output(mdl_out, original_image=image)
         return pred_segmap

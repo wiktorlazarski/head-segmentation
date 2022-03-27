@@ -1,19 +1,27 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import typing as t
 
 
 class VisualizationModule:
-    def __init__(self, figsize: (int, int) = (16, 12), font_size: int = 48):
+    def __init__(
+        self,
+        figsize: t.Tuple[int, int] = (7, 5),
+        font_size: int = 16,
+        save_images=False,
+    ):
         self.figsize = figsize
         self.font_size = font_size
+        self.save_images = save_images
 
         self.cmap = "gray"
-        self.facecolor = "white"
 
-    def visualize_image(self, image):
+    def visualize_image(self, image: np.ndarray):
+        f = plt.figure(figsize=self.figsize)
         plt.imshow(image, cmap=self.cmap)
+        return f
 
-    def visualize_prediction(self, image, pred_segmap):
+    def visualize_prediction(self, image: np.ndarray, pred_segmap: np.ndarray):
         segmented_region = np.zeros(image.shape, dtype=np.uint8)
         segmented_region[pred_segmap == 1] = image[pred_segmap == 1]
 
@@ -31,5 +39,7 @@ class VisualizationModule:
         ax[2].imshow(segmented_region)
         ax[2].set_title("Segmented region image", fontsize=self.font_size)
 
-        plt.savefig("out.png")
-        plt.show()
+        if self.save_images:
+            plt.savefig("out.png")
+
+        return f, ax
