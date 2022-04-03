@@ -24,7 +24,7 @@ class VisualizationModule:
 
     def visualize_prediction(
         self, image: np.ndarray, pred_segmap: np.ndarray, save_images=False
-    ) -> t.Tuple[matplotlib.figure.Figure, matplotlib.axis.Axes]:
+    ) -> t.Tuple[matplotlib.figure.Figure, matplotlib.axes.Axes]:
         segmented_region = image * cv2.cvtColor(pred_segmap, cv2.COLOR_GRAY2RGB)
 
         figsize = (3 * self.figsize[0], 2 * self.figsize[1])

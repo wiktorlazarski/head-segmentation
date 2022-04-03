@@ -22,7 +22,7 @@ def main() -> None:
         if not ret:
             break
 
-        segmap = segmentation_pipeline(frame)
+        segmap = segmentation_pipeline.predict(frame)
 
         next_frame_time = time.time()
 
