@@ -9,11 +9,13 @@ matplotlib
 numpy
 opencv-python
 pandas
+Pillow
 pre-commit
 pytest
 pytorch-lightning
 seaborn
 segmentation-models-pytorch
+streamlit
 torch
 torchvision
 wandb
