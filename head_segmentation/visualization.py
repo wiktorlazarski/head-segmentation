@@ -39,7 +39,7 @@ class VisualizationModule:
         ax[1].set_title("Predicted segmentation map", fontsize=self.font_size)
 
         ax[2].imshow(segmented_region)
-        ax[2].set_title("Segmented region image", fontsize=self.font_size)
+        ax[2].set_title("Cropped image region", fontsize=self.font_size)
 
         if save_images:
             plt.savefig("out.png")
