@@ -2,7 +2,7 @@ import runpy
 
 import setuptools
 
-# Parse requirements
+# Parse requirements.txt file
 install_requires = [line.strip() for line in open("requirements.txt").readlines()]
 
 # Get long description
@@ -26,5 +26,16 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
+    include_package_data=True,
     install_requires=install_requires,
+    extras_require={
+        "dev": [
+            "black",
+            "flake8",
+            "isort",
+            "jupyterlab",
+            "pre-commit",
+            "pytest",
+        ]
+    },
 )

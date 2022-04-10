@@ -21,6 +21,15 @@ class HumanHeadSegmentationPipeline:
         )
         self._model.eval()
 
+    def __call__(self, image: np.ndarray) -> np.ndarray:
+        return self.predict(image)
+
+    def predict(self, image: np.ndarray) -> np.ndarray:
+        preprocessed_image = self._preprocess_image(image)
+        mdl_out = self._model(preprocessed_image)
+        pred_segmap = self._postprocess_model_output(mdl_out, original_image=image)
+        return pred_segmap
+
     def _preprocess_image(self, image: np.ndarray) -> torch.Tensor:
         preprocessed_image = self._preprocessing_pipeline.preprocess_image(image)
         preprocessed_image = preprocessed_image.unsqueeze(0)
@@ -36,9 +45,3 @@ class HumanHeadSegmentationPipeline:
         postprocessed = cv2.resize(out, (w, h), interpolation=cv2.INTER_NEAREST)
 
         return postprocessed
-
-    def predict(self, image: np.ndarray) -> np.ndarray:
-        preprocessed_image = self._preprocess_image(image)
-        mdl_out = self._model(preprocessed_image)
-        pred_segmap = self._postprocess_model_output(mdl_out, original_image=image)
-        return pred_segmap
