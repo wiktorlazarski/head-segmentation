@@ -104,6 +104,11 @@ The table below presents results, computed on the full scale test set images, of
 
 ## 🧐 Qualitative results
 
+![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/master/doc/images/wiktor.png)
+![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/master/doc/images/kuba.png)
+![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/master/doc/images/wiktor_with_glasses.png)
+![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/master/doc/images/kuba_with_helmet.png)
+
 If you want to check predictions on some of your images, please feel free to use our Streamlit application.
 
 ```bash
