@@ -26,5 +26,16 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
+    include_package_data=True,
     install_requires=install_requires,
+    extras_require={
+        "dev": [
+            "black",
+            "flake8",
+            "isort",
+            "jupyterlab",
+            "pre-commit",
+            "pytest",
+        ]
+    },
 )

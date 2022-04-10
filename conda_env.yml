@@ -6,4 +6,4 @@ dependencies:
   - pandas
   - pip
   - pip:
-    - --editable .
+    - --editable .\[dev\]

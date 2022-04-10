@@ -63,7 +63,7 @@ python -m venv venv
 source ./venv/bin/activate
 
 # Install project in editable mode
-pip install -e .
+pip install -e .[dev]
 
 # (Optional but recommended) Install pre-commit hooks to preserve code format consistency
 pre-commit install
