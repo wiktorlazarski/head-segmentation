@@ -2,7 +2,7 @@ import runpy
 
 import setuptools
 
-# Parse requirements
+# Parse requirements.txt file
 install_requires = [line.strip() for line in open("requirements.txt").readlines()]
 
 # Get long description
