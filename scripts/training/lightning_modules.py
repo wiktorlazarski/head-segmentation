@@ -158,7 +158,7 @@ class HumanHeadSegmentationModelModule(pl.LightningModule):
 
     def _step(
         self, batch: t.Tuple[torch.Tensor, torch.Tensor], cm_metric: ConfusionMatrix
-    ) -> torch.Tensor:
+    ) -> pl.utilities.types.STEP_OUTPUT:
         image, true_segmap = batch
 
         pred_segmap = self.neural_net(image)
