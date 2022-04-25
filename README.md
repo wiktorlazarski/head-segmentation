@@ -11,7 +11,6 @@ ______________________________________________________________________
 ______________________________________________________________________
 
 [![ci-testing](https://github.com/wiktorlazarski/head-segmentation/actions/workflows/ci-testing.yml/badge.svg?branch=master&event=push)](https://github.com/wiktorlazarski/head-segmentation/actions/workflows/ci-testing.yml)
-[![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Wj090FmpbK2IO2-qa4tBuzHKrxjlQItM?usp=sharing)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 </div>
