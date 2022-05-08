@@ -10,7 +10,7 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-[![ci-testing](https://github.com/wiktorlazarski/head-segmentation/actions/workflows/ci-testing.yml/badge.svg?branch=master&event=push)](https://github.com/wiktorlazarski/head-segmentation/actions/workflows/ci-testing.yml)
+[![ci-testing](https://github.com/wiktorlazarski/head-segmentation/actions/workflows/ci-testing.yml/badge.svg?branch=main&event=push)](https://github.com/wiktorlazarski/head-segmentation/actions/workflows/ci-testing.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 </div>
@@ -100,10 +100,10 @@ The table below presents results, computed on the full scale test set images, of
 
 ## 🧐 Qualitative results
 
-![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/master/doc/images/wiktor.png)
-![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/master/doc/images/kuba.png)
-![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/master/doc/images/wiktor_with_glasses.png)
-![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/master/doc/images/kuba_with_helmet.png)
+![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/main/doc/images/wiktor.png)
+![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/main/doc/images/kuba.png)
+![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/main/doc/images/wiktor_with_glasses.png)
+![alt text](https://github.com/wiktorlazarski/head-segmentation/blob/main/doc/images/kuba_with_helmet.png)
 
 If you want to check predictions on some of your images, please feel free to use our Streamlit application.
 
