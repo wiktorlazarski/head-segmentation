@@ -28,9 +28,9 @@ pip install git+https://github.com/wiktorlazarski/head-segmentation.git
 
 ### 🤔 Inference
 ```python
-import head_segmentation.predict_pipeline as pred_pipeline
+import head_segmentation.segmentation_pipeline as seg_pipeline
 
-segmentation_pipeline = pred_pipeline.HumanHeadSegmentationPipeline()
+segmentation_pipeline = seg_pipeline.HumanHeadSegmentationPipeline()
 
 segmentation_map = segmentation_pipeline.predict(image)
 ```
