@@ -1,5 +1,6 @@
 .DS_Store
 .vscode/
+head_segmentation/model/*.ckpt
 configs/training_experiment.yaml
 data/
 training_runs/

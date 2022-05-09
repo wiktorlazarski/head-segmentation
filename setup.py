@@ -2,6 +2,16 @@ import runpy
 
 import setuptools
 
+DEV_REQUIREMENTS = [
+    "black",
+    "flake8",
+    "isort",
+    "jupyterlab",
+    "pre-commit",
+    "pytest",
+]
+
+
 # Parse requirements.txt file
 install_requires = [line.strip() for line in open("requirements.txt").readlines()]
 
@@ -28,14 +38,5 @@ setuptools.setup(
     ],
     include_package_data=True,
     install_requires=install_requires,
-    extras_require={
-        "dev": [
-            "black",
-            "flake8",
-            "isort",
-            "jupyterlab",
-            "pre-commit",
-            "pytest",
-        ]
-    },
+    extras_require={"dev": DEV_REQUIREMENTS},
 )

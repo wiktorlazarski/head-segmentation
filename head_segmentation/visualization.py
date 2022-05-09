@@ -9,7 +9,7 @@ import numpy as np
 class VisualizationModule:
     def __init__(
         self,
-        figsize: t.Tuple[int, int] = (7, 5),
+        figsize: t.Tuple[int, int] = (12, 10),
         font_size: int = 16,
     ):
         self.figsize = figsize

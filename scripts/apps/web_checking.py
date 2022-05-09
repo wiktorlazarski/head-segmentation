@@ -2,13 +2,13 @@ import numpy as np
 import streamlit as st
 from PIL import Image
 
-import head_segmentation.predict_pipeline as pred_pipe
+import head_segmentation.segmentation_pipeline as seg_pipeline
 import head_segmentation.visualization as vis
 
 
 @st.cache(allow_output_mutation=True)
-def load_model() -> pred_pipe.HumanHeadSegmentationPipeline:
-    return pred_pipe.HumanHeadSegmentationPipeline()
+def load_model() -> seg_pipeline.HumanHeadSegmentationPipeline:
+    return seg_pipeline.HumanHeadSegmentationPipeline()
 
 
 @st.cache(allow_output_mutation=True)
@@ -19,7 +19,7 @@ def create_vis_module() -> vis.VisualizationModule:
 def main() -> None:
     st.write("# 👦 Human Head Segmentation")
 
-    seg_pipeline = load_model()
+    pipeline = load_model()
     visualizer = create_vis_module()
 
     image_path = st.file_uploader("Upload your image")
@@ -29,7 +29,7 @@ def main() -> None:
         if image.shape[-1] > 3:
             image = image[..., :3]
 
-        segmap = seg_pipeline.predict(image)
+        segmap = pipeline.predict(image)
 
         figure, _ = visualizer.visualize_prediction(image, segmap)
 

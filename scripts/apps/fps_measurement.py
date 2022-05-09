@@ -3,7 +3,7 @@ import time
 import cv2
 import numpy as np
 
-import head_segmentation.predict_pipeline as pred_pipeline
+import head_segmentation.segmentation_pipeline as seg_pipeline
 
 
 def main() -> None:
@@ -15,7 +15,7 @@ def main() -> None:
     prev_frame_time = 0
     next_frame_time = 0
 
-    segmentation_pipeline = pred_pipeline.HumanHeadSegmentationPipeline()
+    segmentation_pipeline = seg_pipeline.HumanHeadSegmentationPipeline()
 
     while web_camera.isOpened():
         ret, frame = web_camera.read()

@@ -4,7 +4,7 @@ import torch
 import torchmetrics
 from loguru import logger
 
-import head_segmentation.predict_pipeline as pred_pipeline
+import head_segmentation.segmentation_pipeline as seg_pipeline
 import scripts.training.data_loading as dl
 
 
@@ -29,7 +29,7 @@ def evaluate() -> None:
     eval_dataset = dl.CelebAHeadSegmentationDataset(dataset_root=args.dataset_path)
 
     logger.info("🕸 Loading neural network module.")
-    segmentation_pipeline = pred_pipeline.HumanHeadSegmentationPipeline(
+    segmentation_pipeline = seg_pipeline.HumanHeadSegmentationPipeline(
         model_path=args.model_path,
         image_input_resolution=args.nn_image_input_resolution,
     )
