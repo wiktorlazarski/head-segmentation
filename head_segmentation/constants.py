@@ -7,6 +7,7 @@ INDEX2LABEL = {0: "background", 1: "head"}
 
 ###### MODEL ######
 
-HEAD_SEGMENTATION_MODEL_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "model", "resnet34_512.ckpt"
-)
+# fmt: off
+HEAD_SEGMENTATION_MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model", "head_segmentation.ckpt")
+HEAD_SEGMENTATION_MODEL_URL = "https://drive.google.com/uc?id=1Asm8JMFQwiHGGuQLXG_qnHvspWGdGuxw"
+# fmt: on

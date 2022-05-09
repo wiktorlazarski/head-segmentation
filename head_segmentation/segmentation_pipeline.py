@@ -1,6 +1,10 @@
+import os
+
 import cv2
+import gdown
 import numpy as np
 import torch
+from loguru import logger
 
 import head_segmentation.constants as C
 import head_segmentation.image_processing as ip
@@ -11,13 +15,22 @@ class HumanHeadSegmentationPipeline:
     def __init__(
         self,
         model_path: str = C.HEAD_SEGMENTATION_MODEL_PATH,
+        model_url: str = C.HEAD_SEGMENTATION_MODEL_URL,
     ):
+        if not os.path.exists(model_path):
+            model_path = C.HEAD_SEGMENTATION_MODEL_PATH
+
+            logger.warning(
+                f"Model {model_path} doesn't exist. Downloading the model to {model_path}."
+            )
+
+            gdown.download(model_url, model_path, quiet=False)
+
         ckpt = torch.load(model_path, map_location=torch.device("cpu"))
+        hparams = ckpt["hyper_parameters"]
 
         self._preprocessing_pipeline = ip.PreprocessingPipeline(
-            nn_image_input_resolution=ckpt["hyper_parameters"][
-                "nn_image_input_resolution"
-            ]
+            nn_image_input_resolution=hparams["nn_image_input_resolution"]
         )
         self._model = mdl.HeadSegmentationModel.load_from_checkpoint(
             ckpt_path=model_path
