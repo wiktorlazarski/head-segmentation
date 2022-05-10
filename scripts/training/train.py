@@ -75,13 +75,16 @@ def main(configs: omegaconf.DictConfig) -> None:
         log_every_n_steps=1,
         callbacks=[early_stop_callback, model_ckpt_callback],
         max_epochs=configs.training.max_epochs,
-        weights_save_path="models",
         gpus=1 if configs.training.with_gpu else 0,
     )
 
     # Train loop
     logger.info("🏋️ Starting training loop.")
     nn_trainer.fit(nn_module, dataset_module)
+
+    # Display best model based on monitored metric
+    logger.info(f"🥇 Best model: {model_ckpt_callback.best_model_path}")
+    nn_module.load_from_checkpoint(model_ckpt_callback.best_model_path)
 
     # Test loop
     logger.info("🧪 Starting testing loop.")

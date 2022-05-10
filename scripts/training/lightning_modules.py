@@ -23,6 +23,8 @@ class HumanHeadSegmentationDataModule(pl.LightningDataModule):
         size_augmentation_keys: t.Optional[t.List[str]] = None,
         content_augmentation_keys: t.Optional[t.List[str]] = None,
     ):
+        super().__init__()
+
         self.dataset_root = dataset_root
         self.nn_image_input_resolution = nn_image_input_resolution
         self.batch_size = batch_size
