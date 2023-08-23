@@ -6,12 +6,12 @@ import head_segmentation.segmentation_pipeline as seg_pipeline
 import head_segmentation.visualization as vis
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache_resource()
 def load_model() -> seg_pipeline.HumanHeadSegmentationPipeline:
     return seg_pipeline.HumanHeadSegmentationPipeline()
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache_resource()
 def create_vis_module() -> vis.VisualizationModule:
     return vis.VisualizationModule()
 
