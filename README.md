@@ -114,6 +114,32 @@ cd head-segmentation
 streamlit run ./scripts/apps/web_checking.py
 ```
 
+## ⏰ Inference time
+
+If you are strict with time, you can use gpu to acclerate inference. Visualization also consume some time, you can just save the final result as below.
+
+```python
+import torch
+import cv2
+import head_segmentation.segmentation_pipeline as seg_pipeline
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+segmentation_pipeline = seg_pipeline.HumanHeadSegmentationPipeline(device=device)
+
+segmentation_map = segmentation_pipeline.predict(image)
+
+segmented_region = image * cv2.cvtColor(segmentation_map, cv2.COLOR_GRAY2RGB)
+cv2.imwrite("your_image_name", segmented_region)
+```
+
+The table below presents inference time which is tested on Tesla T4 (just for reference). The first image will take more time.
+
+|                |       save figure     | just save final result|
+|:--------------:|:---------------------:|:---------------------:|
+|       cpu      |       around 2.1s     |       around 0.8s     |
+|       gpu      |       around 1.4s     |       around 0.15s    |
+
 <div align="center">
 
 ### 🤗 Enjoy the model!
