@@ -16,7 +16,7 @@ class HumanHeadSegmentationPipeline:
         self,
         model_path: str = C.HEAD_SEGMENTATION_MODEL_PATH,
         model_url: str = C.HEAD_SEGMENTATION_MODEL_URL,
-        device = torch.device('cpu')
+        device: torch.device = torch.device('cpu')
     ):
         if not os.path.exists(model_path):
             model_path = C.HEAD_SEGMENTATION_MODEL_PATH
