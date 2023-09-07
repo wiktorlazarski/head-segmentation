@@ -120,7 +120,7 @@ If you are strict with time, you can use gpu to acclerate inference. Visualizati
 
 ```python
 import torch
-import cv2
+from PIL import Image
 import head_segmentation.segmentation_pipeline as seg_pipeline
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -130,7 +130,9 @@ segmentation_pipeline = seg_pipeline.HumanHeadSegmentationPipeline(device=device
 segmentation_map = segmentation_pipeline.predict(image)
 
 segmented_region = image * cv2.cvtColor(segmentation_map, cv2.COLOR_GRAY2RGB)
-cv2.imwrite("your_image_name", segmented_region)
+
+pil_image = Image.fromarray(segmented_region)
+pil_image.save(save_path)
 ```
 
 The table below presents inference time which is tested on Tesla T4 (just for reference). The first image will take more time.
