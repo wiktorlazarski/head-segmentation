@@ -1,6 +1,8 @@
 # app/Dockerfile
 
-FROM python:3.9-slim
+FROM python:3.7-slim
+
+EXPOSE ${PORT}
 
 WORKDIR /app
 
@@ -18,8 +20,6 @@ RUN git clone https://github.com/wiktorlazarski/head-segmentation.git .
 
 RUN pip3 install -e .
 
-EXPOSE 8501
+# ENTRYPOINT ["streamlit", "run", "apps/web_checking.py", "--server.port=", ${PORT}, "--server.address=0.0.0.0"]
 
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
-
-ENTRYPOINT ["streamlit", "run", "apps/web_checking.py", "--server.port=8501", "--server.address=0.0.0.0"]
+ENTRYPOINT ["/entrypoint.sh"]
