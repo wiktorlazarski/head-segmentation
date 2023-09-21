@@ -20,6 +20,4 @@ RUN git clone https://github.com/wiktorlazarski/head-segmentation.git .
 
 RUN pip3 install -e .
 
-# ENTRYPOINT ["streamlit", "run", "apps/web_checking.py", "--server.port=", ${PORT}, "--server.address=0.0.0.0"]
-
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT exec python -m streamlit run apps/web_checking.py --server.port=$PORT --server.address=0.0.0.0
