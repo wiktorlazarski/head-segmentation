@@ -16,6 +16,10 @@ ______________________________________________________________________
 
 </div>
 
+## 🔍 Preview
+
+Feel free to checkout our Streamlit application at https://head-segmentation-d4mc3a3f3q-lm.a.run.app/
+
 ## 💎 Installation with `pip`
 
 Installation is as simple as running:
